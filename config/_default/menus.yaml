@@ -8,6 +8,6 @@ main:
   - name: Topics
     url: tags/
     weight: 20
-  - name: Uses
+  - name: About Me
     url: uses/
-    weight: 30
+    weight: 11
