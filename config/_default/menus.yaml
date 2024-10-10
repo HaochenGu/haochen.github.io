@@ -9,5 +9,5 @@ main:
     url: tags/
     weight: 20
   - name: About
-    url: uses/
+    url: about/
     weight: 11
