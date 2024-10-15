@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Home | Haochen's Blog</title><link>http://localhost:1313/</link><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml"/><description>Home</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 24 Oct 2023 00:00:00 +0000</lastBuildDate><image><url>http://localhost:1313/media/icon_hu7729264130191091259.png</url><title>Home</title><link>http://localhost:1313/</link></image><item><title>About</title><link>http://localhost:1313/about/</link><pubDate>Tue, 24 Oct 2023 00:00:00 +0000</pubDate><guid>http://localhost:1313/about/</guid><description>&lt;h3 id="education">Education&lt;/h3>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Home | Haochen's Blog</title><link>http://localhost:1313/</link><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml"/><description>Home</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 24 Oct 2023 00:00:00 +0000</lastBuildDate><image><url>http://localhost:1313/media/icon_hu7729264130191091259.png</url><title>Home</title><link>http://localhost:1313/</link></image><item><title>About me</title><link>http://localhost:1313/about/</link><pubDate>Tue, 24 Oct 2023 00:00:00 +0000</pubDate><guid>http://localhost:1313/about/</guid><description>&lt;h3 id="education">Education&lt;/h3>
 &lt;ul>
 &lt;li>&lt;strong>2023.09 - 2026.09&lt;/strong>, Bsc. Mathematics with Statistics,
 , London.&lt;/li>
@@ -9,4 +9,8 @@
 &lt;ul>
 &lt;li>Rhythm Game&lt;/li>
 &lt;li>Photography&lt;/li>
-&lt;/ul></description></item></channel></rss>
+&lt;/ul>
+&lt;h3 id="some-muttering">Some muttering&lt;/h3>
+&lt;p>I was born in Yancheng and didn’t receive an education outside of Yancheng until high school. I often emphasize this because my background has had a big impact on me, even if most people probably don’t know the city. Yancheng pushed me to work harder and think more because I didn’t want to stay there.&lt;/p>
+&lt;p>Before high school, the praise from adults felt empty. Sure, I was clever and could be number one in all the science subjects in my class, but so what? They said this could get me into a good university, but how? They said a good university would lead to a good job, but what kind of job? The education system in a city like Yancheng couldn&amp;rsquo;t answer these questions.&lt;/p>
+&lt;p>Now, I know I can do a math degree, and I’m interested in technology, so I’m planning to pursue a PhD in machine learning. I found that, the higher environment I am in, the better sense of direction I have, which I think necessary to our life.&lt;/p></description></item></channel></rss>

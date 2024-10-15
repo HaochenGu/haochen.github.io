@@ -5,11 +5,9 @@
       "article",
       "aside",
       "body",
-      "br",
       "button",
       "circle",
       "div",
-      "em",
       "footer",
       "h1",
       "h2",
@@ -248,13 +246,11 @@
       "xl:space-x-8"
     ],
     "ids": [
-      "desktop-apps",
-      "editor--terminal",
       "education",
       "hide-button",
-      "imperial-college-london-uk",
       "interest",
       "moon",
+      "my-path-before-university",
       "nav-menu",
       "nav-toggle",
       "page-bg",
@@ -270,9 +266,9 @@
       "share-link-x",
       "show-button",
       "site-header",
+      "some-muttering",
       "sun",
-      "top",
-      "website"
+      "top"
     ]
   }
 }
