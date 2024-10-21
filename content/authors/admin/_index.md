@@ -49,4 +49,4 @@ highlight_name: true
 # Author's website URL
 website: ""
 ---
-As of October 9, 2024, my name is Haochen Gu, and I am a second-year Mathematics with Statistics student at Imperial College. After contemplating the idea several times, I have finally decided to start this blog to document my personal development. In the future, this blog may support my journey toward a PhD, serve as a reference for future generations, or fulfill other purposes. However, my greatest hope is that it will help me gain a deeper understanding of how I evolve as an individual.
+My name is Haochen Gu, and I am a second-year Mathematics with Statistics student at Imperial College. I am looking forwarch to doing research in the area of machine learning and statistics.
