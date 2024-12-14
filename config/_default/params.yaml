@@ -51,7 +51,7 @@ locale:
 # Site features
 features:
   math:
-    enable: false
+    enable: True
   privacy_pack:
     enable: false
   repository:
