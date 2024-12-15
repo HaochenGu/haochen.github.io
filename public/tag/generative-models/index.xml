@@ -1,1 +1,101 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Generative Models | Haochen's Blog</title><link>http://localhost:1313/tag/generative-models/</link><atom:link href="http://localhost:1313/tag/generative-models/index.xml" rel="self" type="application/rss+xml"/><description>Generative Models</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Sat, 14 Dec 2024 00:00:00 +0000</lastBuildDate><image><url>http://localhost:1313/media/icon_hu7729264130191091259.png</url><title>Generative Models</title><link>http://localhost:1313/tag/generative-models/</link></image><item><title>Study Notes - How I Understand Flow Matching, Starting from Generative Models.</title><link>http://localhost:1313/blog/flow_matching/</link><pubDate>Sat, 14 Dec 2024 00:00:00 +0000</pubDate><guid>http://localhost:1313/blog/flow_matching/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Generative Models | Haochen's Blog</title><link>http://localhost:1313/tag/generative-models/</link><atom:link href="http://localhost:1313/tag/generative-models/index.xml" rel="self" type="application/rss+xml"/><description>Generative Models</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Sat, 14 Dec 2024 00:00:00 +0000</lastBuildDate><image><url>http://localhost:1313/media/icon_hu7729264130191091259.png</url><title>Generative Models</title><link>http://localhost:1313/tag/generative-models/</link></image><item><title>Study Notes - How I Understand Flow Matching, Starting from Generative Models.</title><link>http://localhost:1313/blog/flow_matching/</link><pubDate>Sat, 14 Dec 2024 00:00:00 +0000</pubDate><guid>http://localhost:1313/blog/flow_matching/</guid><description>&lt;p>Flow matching is one technique to train flow-based generative models. As a beginner in machine learning, I will explain my understanding of flow matching, starting from generative models.&lt;/p>
+&lt;h1 id="generative-models">Generative Models&lt;/h1>
+&lt;p>For a generative model, the key assumption is that, the sample we want to generate forms a distribution $p(x)$. For example, to train a model to generate images of cats, we want to learn a probability with dimension $256 \times 256 \times 3$. ($256 \times 256$ is the resolution of the image, and $3$ is the number of channels.) Samples from this distribution will be similar to cats.&lt;/p>
+&lt;p>$p(x)$ is a very complex distribution and in most cases, we don&amp;rsquo;t know how it really looks like. One strategy is to learn a transformation from a simple distribution $p_Z(z)$ to $p_X(x)$, where $z$ is a simple distribution, like a Gaussian distribution. To generate samples, we can simple from $p_Z(z)$ and transform it to $p_X(x)$. This is the idea of flow-based generative models.&lt;/p>
+&lt;h1 id="normalizing-flows">Normalizing Flows&lt;/h1>
+&lt;p>In the idea of Normalizing Flow, a learnable generator $G_{\theta}$ is built making:
+&lt;/p>
+$$
+x = G_{\theta}(z)
+$$$$
+p_{1}(x) = p_{0}(z) |det(J_{G^{-1}})|
+$$&lt;p>
+where $p_{0}(z)$ is the standard Gaussian distribution and $p_{1}(x)$ is the real distribution of data.&lt;/p>
+&lt;p>$|det(J_{G^{-1}})|$ is the determinant of the Jacobian matrix of the inverse function of $G$, and its existence can be understood as the stretching of the probability space. Rigorous proof should be easily found from any statistics textbook.&lt;/p>
+&lt;p>The loss function of the model is defined by maximizing the log-likelihood, which is:
+&lt;/p>
+$$
+log p_{1}(x) = log p_{0}(z) + log |det(J_{G^{-1}})|
+$$&lt;p>There are several restrictions on $G_{\theta}$. Firstly, it must be invertible. Secondly, $G_{\theta}$ must be in some special form to make the determinant easy to compute, such as triangular matrix. Due to the second restriction, single flow is not strong enough, so we need to make it deeper, which is:
+&lt;/p>
+$$
+x = G_{\theta_{1}} \circ G_{\theta_{2}} \circ ... \circ G_{\theta_{n}}(z)
+$$&lt;p>
+and the log-likelihood is:
+&lt;/p>
+$$
+log p_{1}(x) = log p_{0}(z) + \sum_{i=1}^{n} log |det(J_{G_{\theta_{i}}^{-1}})|
+$$&lt;h1 id="continuous-normalizing-flows-cnfs">Continuous Normalizing Flows (CNFs)&lt;/h1>
+&lt;p>There are several motivations for us to make the flow continuous. In my understanding, it makes the transformation more smooth and &amp;ldquo;continuous&amp;rdquo; can be understood as &amp;ldquo;infinitely deep&amp;rdquo;. In CNFs, the transformation is defined by an ODE:
+&lt;/p>
+$$
+\frac{d x_{t}}{d t} = u_t (x_t, \theta)
+$$&lt;p>
+for $t \in [0, 1]$. Here, $x_{t}$ is the state of the system at time $t$, and $u_t$ is the vector field. At time 0, $p_{0}(x)$ is the standard Gaussian distribution, and at time 1, $p_{1}(x)$ is the real distribution of data. Again, ignoring some calculus details, we have
+&lt;/p>
+$$
+\frac{d p_{t}(x_t)}{d t} + \frac{d}{d x} (p_t(x_t)u_t(x_t)) = 0
+$$$$
+\frac{d p_{t}(x_t)}{d t} = - \nabla \cdot u_{t}(x_t, \theta) p_{t}(x_t)
+$$$$
+\frac{d log p_{t}(x_t)}{d t} = - \nabla \cdot u_{t}(x_t, \theta)
+$$&lt;p>
+The Log-likelihood is:
+&lt;/p>
+$$
+log p_{1}(x) = log p_{0}(x_0) + \int_{0}^{1} - \nabla \cdot u_{t}(x_t, \theta) dt
+$$&lt;p>
+In this equation, the biggest problem is that, the integral is very expensive to compute. This problem is exactly what flow matching is trying to solve.&lt;/p>
+&lt;h1 id="flow-matching">Flow Matching&lt;/h1>
+&lt;p>By deriving loss function from likelihood, the model is directly learning the distribution of data. However, the distribution is fully defined by the transformation, which is flows. So that it&amp;rsquo;s totally enough to learn the flows, which is the idea of flow matching.&lt;/p>
+&lt;p>In flow matching, the goal is minimize the difference between neural network flows and the true flows, which is:
+&lt;/p>
+$$
+L_{FM} = E_{t, p_t(x_t)} ||v_t(x_t, \theta) - u_t(x_t)||^2
+$$&lt;p>
+where $v_t(x_t)$ is the neural network flow and $u_t(x_t, \theta)$ is the true flow. However, the true flow is unknown. Solution is to use the conditional probability.&lt;/p>
+&lt;p>Given a sample $z$, we obtain the condition $x_1 = z$. Under this condition, all the samples of $x_0$ flows to $z$. Under this conditional path, $u_t(x_t | x_1 = z)$ is a vector field all pointing to $z$.&lt;/p>
+&lt;p>For the intermediate states, to gurantee $x_t$ starts from $x_0$ and ends at $x_1$, it&amp;rsquo;s reasonable to define it as:
+&lt;/p>
+$$
+x_t = \Psi_t(x_0 \mid x_1) = \textcolor{red}{\sigma_t} x_0 + \textcolor{blue}{\alpha_t} x_1
+$$&lt;p>
+where $\sigma_t + \alpha_t = 1$.&lt;/p>
+&lt;p>Here we obtain the conditional flow matching:
+&lt;/p>
+$$
+L_{CFM} = E_{t, q(z), p_t(x_t | x_1 = z)} ||v_t(x_t, \theta) - u_t(x_t|x_1 = z)||^2
+$$&lt;p>
+where $u_t(x_t|x_1 = z)$ is known.&lt;/p>
+&lt;p>Again, by some magic of calculus, we have:
+&lt;/p>
+$$
+\nabla_{\theta} L_{FM} (\theta) = \nabla_{\theta} L_{CFM} (\theta)
+$$&lt;p>
+which is compeletely enough to do gradient descent and train the model.&lt;/p>
+&lt;h1 id="flow-matching-and-diffusion-models">Flow Matching and Diffusion Models&lt;/h1>
+&lt;p>To explain relationship between flow matching and diffusion models. I think it&amp;rsquo;s necessary to explain the training algorithm of flow matching.&lt;/p>
+&lt;p>To train flow matching, we need to have the following samples.
+&lt;/p>
+$$
+\begin{aligned}
+&amp; t \sim \mathcal{U}([0, 1]) &amp;&amp; \quad \text{\textcolor{green}{\(\triangleright\) sample time}} \\
+&amp; z \sim q(z) &amp;&amp; \quad \text{\textcolor{green}{\(\triangleright\) sample data}} \\
+&amp; x_0 \sim p(x_0) &amp;&amp; \quad \text{\textcolor{green}{\(\triangleright\) sample noise}} \\
+&amp; x_t = \Psi_t(x_0 \mid x_1) &amp;&amp; \quad \text{\textcolor{green}{\(\triangleright\) conditional flow}}
+\end{aligned}
+$$&lt;p>
+And then gradient step with
+&lt;/p>
+$$ \nabla_\theta \left\| v_t^\theta(x_t) - u_t(x_t|x_1 = z) \right\|^2
+$$&lt;p>
+One way to understand it that, given a sample from standard Gaussian distribution, we overlap it with a data point by function $\Psi_t(x_0|x_1)$ to get a $\text{\textcolor{red}{intermediate state}}$ $x_t$. And gradient step is to learn the flow to transform $x_t$ back to $z$.&lt;/p>
+&lt;p>Recall the diffusion model training, given a data point, we sample a noise from standard Gaussian distribution and overlap it with the data point to get a $\text{\textcolor{red}{noisy data point}}$. And then the neural network is trained to predict the noise.&lt;/p>
+&lt;p>Compare two statement, it&amp;rsquo;s clear(maybe) that flow matching is indeed a diffusion model, where the denoising process is calculated and done by the flow.&lt;/p>
+&lt;h1 id="reference">Reference&lt;/h1>
+&lt;p>How I Understand Flow Matching :
+&lt;/p>
+&lt;p>Flow Matching: Simplifying and Generalizing Diffusion Models | Yaron Lipman :
+&lt;/p>
+&lt;p>An Introduction to Flow Matching :
+&lt;/p></description></item></channel></rss>
